@@ -17,7 +17,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@statics/*": ["src/app/statics/*"],
+      "stream": ["./node_modules/stream-browserify"],
+    },
+    "resolveJsonModule": true,
   },
   "angularCompilerOptions": {
     "enableIvy": true,
