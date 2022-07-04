@@ -1,0 +1,23 @@
+<h1 class="madia-name font-16">{{ mediaName }}</h1>
+<section class="container">
+  <section *ngFor="let item of items" class="item">
+    <h2 class="item__title">
+      <a href="{{ item.link }}" title="{{ item.title }}">
+        {{ trimTitle(item.title) }}
+      </a>
+    </h2>
+    <div class="item__image" *ngIf="item.image">
+      <img src="{{ item.image }}" />
+    </div>
+    <div class="item__description font-10" *ngIf="item.description">
+      <a href="{{ item.link }}" title="{{ item.description }}">
+        {{ trimDescription(item.description) }}
+      </a>
+    </div>
+    <div class="item__pubDate">
+      <a href="{{ item.link }}">
+        {{ item.pubDate }}
+      </a>
+    </div>
+  </section>
+</section>
