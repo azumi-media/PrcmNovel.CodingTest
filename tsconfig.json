@@ -15,12 +15,12 @@
       "node_modules/@types"
     ],
     "lib": [
-      "es2018",
+      "es2019",
       "dom"
     ],
     "paths": {
       "@app/*": ["src/app/*"],
-      "@statics/*": ["src/app/statics/*"],
+      "@statics/*": ["src/statics/*"],
       "stream": ["./node_modules/stream-browserify"],
     },
     "resolveJsonModule": true,

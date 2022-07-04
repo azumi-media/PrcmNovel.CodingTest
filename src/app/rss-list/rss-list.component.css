@@ -1,0 +1,59 @@
+.font-color {
+}
+
+.font-10 {
+  font-size: 1rem;
+}
+.font-12 {
+  font-size: 1.2rem;
+}
+
+.font-16 {
+  font-size: 1.6rem;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.container {
+  width: 100vw;
+  padding: 16px;
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-column-gap: 12px;
+  grid-row-gap: 20px;
+}
+
+.item {
+  overflow: hidden;
+  display: grid;
+  grid-template: auto / auto;
+  grid-row-gap: 8px;
+  justify-items: stretch;
+  align-content: stretch;
+}
+
+.item__title {
+  overflow: hidden;
+  height: calc(1.2rem * 2.4);
+  line-height: 1.2;
+  font-size: 1.2rem;
+}
+
+.item__image {
+  max-height: 240px;
+  display: flex;
+  justify-content: center;
+}
+
+.item__image img {
+  width: 100%;
+  align-content: center;
+  object-fit: cover;
+}
+
+.item__description {
+  overflow: hidden;
+}

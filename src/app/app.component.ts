@@ -1,4 +1,6 @@
 import { Component, VERSION } from '@angular/core';
+import { xml as sportsXml } from "@statics/sports";
+import { xml as itXml } from "@statics/it";
 
 @Component({
   selector: 'my-app',
@@ -6,5 +8,6 @@ import { Component, VERSION } from '@angular/core';
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent  {
-  name = 'Angular ' + VERSION.major;
+  sportsXml = sportsXml;
+  itXml = itXml;
 }

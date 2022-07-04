@@ -1,7 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { xml2json } from "xml-js";
-import { xml } from "@app/statics/anmanmv-all";
-import { __values } from "tslib";
+
+interface RssOverallInteface {
+  rss: {
+    channel: {
+      title: Xml2JsonData;
+      item: RssItemInterface[];
+    };
+  };
+}
 
 interface Xml2JsonData {
   _text: string;
@@ -9,21 +16,16 @@ interface Xml2JsonData {
 
 interface RssItemInterface {
   comments: Xml2JsonData;
-  description: Xml2JsonData;
-  image: Xml2JsonData;
+  description?: Xml2JsonData;
+  image?: Xml2JsonData;
   link: Xml2JsonData;
   pubDate: Xml2JsonData;
   title: Xml2JsonData;
 }
 
-interface Item {
-  comment: string;
-  description: string;
-  image: string;
-  link: string;
-  pubDate: string;
-  title: string;
-}
+type Item = {
+  [k in keyof RssItemInterface]: string;
+};
 
 @Component({
   selector: "app-rss-list",
@@ -31,28 +33,53 @@ interface Item {
   styleUrls: ["./rss-list.component.css"],
 })
 export class RssListComponent implements OnInit {
+  @Input() xml: string = "";
+  @Input() limit?: number;
   items: Item[];
+  mediaName: string;
 
   constructor() {}
 
   ngOnInit(): void {
     // xmlデータをjson形式で取得
-    const result = xml2json(xml, {
+    const result = xml2json(this.xml, {
       compact: true,
       ignoreComment: true,
-      spaces: 4,
+      spaces: 2,
     });
-    const json: { [key: string]: any } = JSON.parse(result);
-    console.dir(json);
+    const json: RssOverallInteface = JSON.parse(result);
 
-    this.items = json.rss.channel.item.map((v) => {
+    // メディア名取得
+    this.mediaName = json.rss.channel.title._text;
+
+    // コンテンツ取得
+    const items = json.rss.channel.item.map((v) => {
       return Object.fromEntries(
-        Object.entries(v).map(([key, value]: [string, Xml2JsonData]) => [
-          key,
-          value._text,
-        ])
-      );
+        Object.entries(v).map(
+          ([key, value]: [keyof RssItemInterface, Xml2JsonData]) => [
+            key,
+            value._text,
+          ]
+        )
+      ) as Item;
     });
-    console.log(this.items);
+
+    this.items = !!this.limit ? items.slice(0, this.limit) : items;
+  }
+
+  // titleを40文字にトリミング
+  trimTitle(str: string | undefined): string {
+    if (!str || str.length <= 40) {
+      return str;
+    }
+    return str.slice(0, 40) + "…";
+  }
+
+  // dscriptionを200文字にトリミング
+  trimDescription(str: string | undefined): string {
+    if (!str || str.length <= 80) {
+      return str || "";
+    }
+    return str.slice(0, 80) + "…";
   }
 }
