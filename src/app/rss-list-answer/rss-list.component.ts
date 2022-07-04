@@ -32,7 +32,7 @@ type Item = {
   templateUrl: "./rss-list.component.html",
   styleUrls: ["./rss-list.component.css"],
 })
-export class RssListComponent implements OnInit {
+export class RssListAnswerComponent implements OnInit {
   @Input() xml: string = "";
   @Input() limit?: number;
   items: Item[];
