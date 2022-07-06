@@ -2,6 +2,7 @@ import { Component, VERSION } from '@angular/core';
 import { xml as sportsXml } from "@statics/sports";
 import { xml as itXml } from "@statics/it";
 import { environment } from 'src/environments/environment';
+import { xml } from "@statics/sports";
 
 @Component({
   selector: 'my-app',
@@ -11,4 +12,5 @@ import { environment } from 'src/environments/environment';
 export class AppComponent  {
   sportsXml = sportsXml;
   itXml = itXml;
+  xml = xml;
 }

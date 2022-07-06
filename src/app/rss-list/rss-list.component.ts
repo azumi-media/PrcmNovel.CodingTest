@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { xml2json } from "xml-js";
-import { xml } from "@statics/sports";
 
 interface RssOverallInteface {
   rss: {
@@ -49,7 +48,7 @@ type Item = {
   styleUrls: ["./rss-list.component.css"],
 })
 export class RssListComponent implements OnInit {
-  // @Input() xml: string = "";
+  @Input() xml: string = "";
   // @Input() limit?: number;
   items: Item[];
   mediaName: string;
@@ -58,7 +57,7 @@ export class RssListComponent implements OnInit {
 
   ngOnInit(): void {
     // xmlデータをjson形式で取得
-    const result = xml2json(xml, {
+    const result = xml2json(this.xml, {
       compact: true,
       ignoreComment: true,
       spaces: 2,
@@ -69,20 +68,28 @@ export class RssListComponent implements OnInit {
     this.mediaName = json.rss.channel.title._text;
 
     // コンテンツ取得
-    this.items = json.rss.channel.item.map((v) => {
+    this.items = this.getContents(json.rss.channel.item);
+  }
+
+  getContents(rssItems: RssItemInterface[]): Item[] {
+    return rssItems.map(rssItem => {
       return Object.fromEntries(
-        Object.entries(v).map(([key, value]) => [key, value._text])
-      ) as any;
-    });
+        Object.entries(rssItem).map(([key, value]: [string, { [key: string]: string }]) => [key, value._text])
+      ) as Item;
+    })
   }
 
-  // titleを40文字にトリミング
+  trimValue(str: string | undefined, length: number) :string {
+    return str ? str.slice(0, length): '';
+  }
+
   trimTitle(str: string | undefined): string {
-    return str;
+    return this.trimValue(str, 40)
   }
 
-  // dscriptionを80文字にトリミング
   trimDescription(str: string | undefined): string {
-    return str;
+    return this.trimValue(str, 80)
   }
+
+
 }
