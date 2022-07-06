@@ -81,7 +81,7 @@ export class RssListComponent implements OnInit {
     return str;
   }
 
-  // dscriptionを200文字にトリミング
+  // dscriptionを80文字にトリミング
   trimDescription(str: string | undefined): string {
     return str;
   }

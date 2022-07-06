@@ -41,13 +41,7 @@ export class RssListAnswerComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    // xmlデータをjson形式で取得
-    const result = xml2json(this.xml, {
-      compact: true,
-      ignoreComment: true,
-      spaces: 2,
-    });
-    const json: RssOverallInteface = JSON.parse(result);
+    const json = this.parseJson();
 
     // メディア名取得
     this.mediaName = json.rss.channel.title._text;
@@ -67,19 +61,29 @@ export class RssListAnswerComponent implements OnInit {
     this.items = !!this.limit ? items.slice(0, this.limit) : items;
   }
 
-  // titleを40文字にトリミング
-  trimTitle(str: string | undefined): string {
-    if (!str || str.length <= 40) {
-      return str;
-    }
-    return str.slice(0, 40) + "…";
+  parseJson(): RssOverallInteface {
+    const result = xml2json(this.xml, {
+      compact: true,
+      ignoreComment: true,
+      spaces: 2,
+    });
+    return JSON.parse(result);
   }
 
-  // dscriptionを200文字にトリミング
+  // titleを40文字にトリミング
+  trimTitle(str: string | undefined): string {
+    return this.trim(str, 40);
+  }
+
+  // dscriptionを80文字にトリミング
   trimDescription(str: string | undefined): string {
-    if (!str || str.length <= 80) {
-      return str || "";
+    return this.trim(str, 80);
+  }
+
+  private trim(str: string, limit: number) {
+    if (!str || str.length <= limit) {
+      return str;
     }
-    return str.slice(0, 80) + "…";
+    return str.slice(0, limit) + "…";
   }
 }
