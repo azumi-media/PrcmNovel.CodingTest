@@ -16,5 +16,5 @@ RSSを表示する画面があります。
 
 ## コマンド
 
-- `npm run start`: テスト向けコードのserve開始
+- `npm start`: テスト向けコードのserve開始
 - `npm run serve:answer`: 解答用コードのserve開始
