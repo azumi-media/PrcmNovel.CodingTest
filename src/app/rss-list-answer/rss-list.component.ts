@@ -1,29 +1,46 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { xml2json } from "xml-js";
+import { xml } from "@statics/sports";
 
 interface RssOverallInteface {
   rss: {
     channel: {
-      title: Xml2JsonData;
+      title: {
+        _text: string;
+      };
       item: RssItemInterface[];
     };
   };
 }
 
-interface Xml2JsonData {
-  _text: string;
-}
-
 interface RssItemInterface {
-  description?: Xml2JsonData;
-  image?: Xml2JsonData;
-  link: Xml2JsonData;
-  pubDate: Xml2JsonData;
-  title: Xml2JsonData;
+  comments: {
+    _text: string;
+  };
+  description?: {
+    _text: string;
+  };
+  image?: {
+    _text: string;
+  };
+  link: {
+    _text: string;
+  };
+  pubDate: {
+    _text: string;
+  };
+  title: {
+    _text: string;
+  };
 }
 
 type Item = {
-  [k in keyof RssItemInterface]: string;
+  comments: string;
+  description?: string;
+  image?: string;
+  link: string;
+  pubDate: string;
+  title: string;
 };
 
 @Component({
@@ -32,57 +49,40 @@ type Item = {
   styleUrls: ["./rss-list.component.css"],
 })
 export class RssListAnswerComponent implements OnInit {
-  @Input() xml: string = "";
-  @Input() limit?: number;
+  // @Input() xml: string = "";
+  // @Input() limit?: number;
   items: Item[];
   mediaName: string;
 
   constructor() {}
 
   ngOnInit(): void {
-    const json = this.parseJson();
+    // xmlデータをjson形式で取得
+    const result = xml2json(xml, {
+      compact: true,
+      ignoreComment: true,
+      spaces: 2,
+    });
+    const json: RssOverallInteface = JSON.parse(result);
 
     // メディア名取得
     this.mediaName = json.rss.channel.title._text;
 
     // コンテンツ取得
-    const items = json.rss.channel.item.map((v) => {
+    this.items = json.rss.channel.item.map((v) => {
       return Object.fromEntries(
-        Object.entries(v).map(
-          ([key, value]: [keyof RssItemInterface, Xml2JsonData]) => [
-            key,
-            value._text,
-          ]
-        )
-      ) as Item;
+        Object.entries(v).map(([key, value]) => [key, value._text])
+      ) as any;
     });
-
-    this.items = !!this.limit ? items.slice(0, this.limit) : items;
-  }
-
-  parseJson(): RssOverallInteface {
-    const result = xml2json(this.xml, {
-      compact: true,
-      ignoreComment: true,
-      spaces: 2,
-    });
-    return JSON.parse(result);
   }
 
   // titleを40文字にトリミング
   trimTitle(str: string | undefined): string {
-    return this.trim(str, 40);
+    return str;
   }
 
   // dscriptionを80文字にトリミング
   trimDescription(str: string | undefined): string {
-    return this.trim(str, 80);
-  }
-
-  private trim(str: string | undefined, limit: number) {
-    if (!str || str.length <= limit) {
-      return str;
-    }
-    return str.slice(0, limit) + "…";
+    return str;
   }
 }
