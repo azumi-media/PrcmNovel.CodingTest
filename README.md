@@ -1,3 +1,14 @@
-# angular-ivy-kef4d3
+# プリ小説フロントエンドエンジニア用コーディングテスト
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-ivy-kef4d3)
+RSSを表示する画面があります。
+
+1. xmlをパースしたjsonデータの型定義をしてください。
+
+2. `RssListComponent`は一つのxmlにしか対応していません。複数のxmlを受け付けてコンポーネントを再利用できるよう修正してください。
+
+3. 可読性を意識したリファクタリングをしてください。
+
+## コマンド
+
+- `npm run start`: テスト向けコードのserve開始
+- `npm run serve:answer`: 解答用コードのserve開始
