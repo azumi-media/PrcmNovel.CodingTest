@@ -15,7 +15,6 @@ interface Xml2JsonData {
 }
 
 interface RssItemInterface {
-  comments: Xml2JsonData;
   description?: Xml2JsonData;
   image?: Xml2JsonData;
   link: Xml2JsonData;
