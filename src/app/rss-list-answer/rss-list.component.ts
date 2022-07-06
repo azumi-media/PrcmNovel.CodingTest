@@ -80,7 +80,7 @@ export class RssListAnswerComponent implements OnInit {
     return this.trim(str, 80);
   }
 
-  private trim(str: string, limit: number) {
+  private trim(str: string | undefined, limit: number) {
     if (!str || str.length <= limit) {
       return str;
     }
